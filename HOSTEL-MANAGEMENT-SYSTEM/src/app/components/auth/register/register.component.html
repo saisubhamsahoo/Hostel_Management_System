@@ -1,0 +1,106 @@
+<div class="auth-container">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card auth-card">
+          <div class="card-body">
+            <h2 class="text-center mb-4">Register</h2>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+            <div *ngIf="successMessage" class="alert alert-success">
+              {{ successMessage }}
+            </div>
+
+            <form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+
+              <div class="mb-3">
+                <label>First Name</label>
+                <input type="text" class="form-control"
+                  [(ngModel)]="user.firstName" name="firstName" required>
+              </div>
+
+              <div class="mb-3">
+                <label>Last Name</label>
+                <input type="text" class="form-control"
+                  [(ngModel)]="user.lastName" name="lastName" required>
+              </div>
+
+              <div class="mb-3">
+                <label>Email</label>
+                <input type="email" class="form-control"
+                  [(ngModel)]="user.email"
+                  name="email"
+                  required
+                  pattern="^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                <small class="text-danger"
+                  *ngIf="registerForm.submitted && !user.email">
+                  Valid email required
+                </small>
+              </div>
+
+              <div class="mb-3">
+                <label>Password</label>
+                <input type="password" class="form-control"
+                  [(ngModel)]="user.password"
+                  name="password"
+                  minlength="6"
+                  required>
+                <small class="text-danger"
+                  *ngIf="user.password && user.password.length < 6">
+                  Minimum 6 characters
+                </small>
+              </div>
+
+              <div class="mb-3">
+                <label>Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="phone"
+                  [(ngModel)]="user.phone"
+                  maxlength="10"
+                  inputmode="numeric"
+                  pattern="[0-9]*"
+                  (input)="allowOnlyNumbers($event)"
+                  required
+                >
+                <small class="text-danger"
+                  *ngIf="user.phone && user.phone.length !== 10">
+                  Phone number must be 10 digits
+                </small>
+              </div>
+
+              <!-- <div class="mb-3">
+                <label>Role</label>
+                <select class="form-control"
+                  [(ngModel)]="user.role" name="role" required>
+                  <option value="STUDENT">Student</option>
+                  <option value="WARDEN">Warden</option>
+                  <option value="ADMIN">Admin</option> 
+                </select>
+              </div> -->
+
+              <button
+                type="submit"
+                class="btn btn-primary w-100"
+                [disabled]="loading || !registerForm.valid">
+                <span *ngIf="loading">Registering...</span>
+                <span *ngIf="!loading">Register</span>
+              </button>
+
+            </form>
+
+            <div class="text-center mt-3">
+              <p>Already have an account?
+                <a routerLink="/login">Login here</a>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

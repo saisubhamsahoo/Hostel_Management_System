@@ -1,0 +1,67 @@
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between mb-4">
+      <h2>Complaints</h2>
+      <button class="btn btn-primary" *ngIf="currentUser?.role === 'STUDENT'" (click)="showForm = !showForm">
+        {{ showForm ? 'Cancel' : '+ New Complaint' }}
+      </button>
+    </div>
+
+    <div *ngIf="showForm" class="card mb-4">
+      <div class="card-body">
+        <form (ngSubmit)="createComplaint()">
+          <div class="mb-3">
+            <label>Title</label>
+            <input type="text" class="form-control" [(ngModel)]="newComplaint.title" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label>Description</label>
+            <textarea class="form-control" [(ngModel)]="newComplaint.description" name="description" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label>Priority</label>
+            <select class="form-control" [(ngModel)]="newComplaint.priority" name="priority">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+              <option value="URGENT">Urgent</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th *ngIf="canManage() || canDelete()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let complaint of complaints">
+            <td>{{ complaint.id }}</td>
+            <td>{{ complaint.studentName }}</td>
+            <td>{{ complaint.title }}</td>
+            <td><span class="badge" [ngClass]="{'bg-danger': complaint.priority === 'URGENT', 'bg-warning': complaint.priority === 'HIGH'}">{{ complaint.priority }}</span></td>
+            <td><span class="badge" [ngClass]="{'bg-success': complaint.status === 'RESOLVED', 'bg-warning': complaint.status === 'PENDING'}">{{ complaint.status }}</span></td>
+            <td>{{ complaint.createdAt | date:'short' }}</td>
+            <td *ngIf="canManage()" class="action-buttons">
+  <button class="btn btn-sm btn-warning me-1" *ngIf="complaint.status === 'PENDING'" (click)="updateStatus(complaint, 'IN_PROGRESS')">In Progress</button>
+  <button class="btn btn-sm btn-success me-1" *ngIf="complaint.status === 'PENDING' || complaint.status === 'IN_PROGRESS'" (click)="updateStatus(complaint, 'RESOLVED')">Resolve</button>
+  <button class="btn btn-sm btn-danger me-1" *ngIf="complaint.status === 'PENDING'" (click)="updateStatus(complaint, 'REJECTED')">Reject</button>
+</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

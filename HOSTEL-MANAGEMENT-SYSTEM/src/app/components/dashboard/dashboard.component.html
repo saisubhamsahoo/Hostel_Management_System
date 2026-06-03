@@ -1,0 +1,170 @@
+<!-- ===== GLASS NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg glass-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold text-white">Hostel Management</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/dashboard">Dashboard</a>
+        </li>
+
+        <li class="nav-item" *ngIf="currentUser?.role === 'ADMIN' || currentUser?.role === 'WARDEN'">
+          <a class="nav-link" routerLink="/rooms">Rooms</a>
+        </li>
+
+        <li class="nav-item" *ngIf="currentUser?.role === 'ADMIN' || currentUser?.role === 'WARDEN'">
+          <a class="nav-link" routerLink="/students">Students</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/complaints">Complaints</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/leave-requests">Leave Requests</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/room-transfers">Room Transfers</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/maintenance">Maintenance</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center">
+        <span class="navbar-text me-3 text-white">
+          Welcome, {{ currentUser?.firstName }} ({{ currentUser?.role }})
+        </span>
+        <button class="btn btn-flux-outline" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <h2 class="mb-4 fw-bold">Dashboard</h2>
+
+    <!-- Loader -->
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border text-warning"></div>
+    </div>
+
+    <!-- ===== STATISTICS (ADMIN / WARDEN ONLY) ===== -->
+    <div
+      *ngIf="!loading && (currentUser?.role === 'ADMIN' || currentUser?.role === 'WARDEN')"
+      class="dashboard-grid glass-grid"
+    >
+      <div class="stat-card glass">
+        <h3>{{ statistics.totalStudents || 0 }}</h3>
+        <p>Total Students</p>
+      </div>
+
+      <div class="stat-card glass">
+        <h3>{{ statistics.totalRooms || 0 }}</h3>
+        <p>Total Rooms</p>
+      </div>
+
+      <div class="stat-card glass">
+        <h3>{{ statistics.availableRooms || 0 }}</h3>
+        <p>Available Rooms</p>
+      </div>
+
+      <div class="stat-card glass">
+        <h3>{{ statistics.availableBeds || 0 }}</h3>
+        <p>Available Beds</p>
+      </div>
+
+      <div class="stat-card glass">
+        <h3>{{ statistics.pendingComplaints || 0 }}</h3>
+        <p>Pending Complaints</p>
+      </div>
+
+      <div class="stat-card glass">
+        <h3>{{ statistics.pendingLeaveRequests || 0 }}</h3>
+        <p>Pending Leave Requests</p>
+      </div>
+    </div>
+
+    <!-- ===== STUDENT GLASS UI ===== -->
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <div class="card glass">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Quick Actions</h5>
+            <div class="d-grid gap-3">
+
+              <button class="btn btn-flux"
+                *ngIf="currentUser?.role === 'STUDENT'"
+                (click)="navigate('/complaints')">
+                Submit Complaint
+              </button>
+
+              <button class="btn btn-flux"
+                *ngIf="currentUser?.role === 'STUDENT'"
+                (click)="navigate('/leave-requests')">
+                Request Leave
+              </button>
+
+              <button class="btn btn-flux"
+                *ngIf="currentUser?.role === 'STUDENT'"
+                (click)="navigate('/maintenance')">
+                Report Maintenance Issue
+              </button>
+
+              <button class="btn btn-flux"
+                *ngIf="currentUser?.role === 'ADMIN' || currentUser?.role === 'WARDEN'"
+                (click)="navigate('/rooms')">
+                Manage Rooms
+              </button>
+
+              <button class="btn btn-flux"
+                *ngIf="currentUser?.role === 'ADMIN' || currentUser?.role === 'WARDEN'"
+                (click)="navigate('/students')">
+                Manage Students
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card glass">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">Hostel Information</h5>
+            <ul class="list-group list-group-flush glass-list">
+              <li class="list-group-item">
+                Breakfast: <span>8:30 AM - 9:30 AM</span>
+              </li>
+              <li class="list-group-item">
+                Lunch: <span>12:30 PM - 1:30 PM</span>
+              </li>
+              <li class="list-group-item">
+                Dinner: <span>7:30 PM - 8:30 PM</span>
+              </li>
+              <li class="list-group-item">
+                Hostel Closing Time: <span>11:00 PM</span>
+              </li>
+              <li class="list-group-item">
+                Warden - Gajendra Sahoo,   contact number:<span>8759684230</span>
+              </li>
+              <li class="list-group-item">
+                Chief Warden - Prakash Kumar Parida,   contact number:<span>9965842135</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

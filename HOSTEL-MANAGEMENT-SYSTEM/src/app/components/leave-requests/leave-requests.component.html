@@ -1,0 +1,98 @@
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between mb-4">
+      <h2>Leave Requests</h2>
+      <button class="btn btn-primary" *ngIf="currentUser?.role === 'STUDENT'" (click)="showForm = !showForm">
+        {{ showForm ? 'Cancel' : '+ New Request' }}
+      </button>
+    </div>
+
+    <div *ngIf="showForm" class="card mb-4">
+      <div class="card-body">
+        <form (ngSubmit)="createRequest()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>From Date</label>
+              <!-- ✅ [min]="minDate" blocks all past dates in the date picker UI -->
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="newRequest.fromDate"
+                name="fromDate"
+                [min]="minDate"
+                required
+              >
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>To Date</label>
+              <!-- ✅ [min]="minDate" blocks all past dates in the date picker UI -->
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="newRequest.toDate"
+                name="toDate"
+                [min]="minDate"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- ✅ Date validation error displayed below the date fields -->
+          <div *ngIf="dateError" class="alert alert-danger py-2 mb-3">
+            {{ dateError }}
+          </div>
+
+          <div class="mb-3">
+            <label>Reason</label>
+            <textarea class="form-control" [(ngModel)]="newRequest.reason" name="reason" rows="3" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-success">Submit Request</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Approver</th>
+            <th *ngIf="canApprove() || canDelete()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of requests">
+            <td>{{ req.id }}</td>
+            <td>{{ req.studentName }}</td>
+            <td>{{ req.fromDate }}</td>
+            <td>{{ req.toDate }}</td>
+            <td>{{ req.reason }}</td>
+            <td>
+              <span
+                class="badge"
+                [ngClass]="{
+                  'bg-success': req.status === 'APPROVED',
+                  'bg-danger': req.status === 'REJECTED',
+                  'bg-warning text-dark': req.status === 'PENDING'
+                }"
+              >
+                {{ req.status }}
+              </span>
+            </td>
+            <td>{{ req.approverName || '-' }}</td>
+            <td *ngIf="canApprove() || canDelete()">
+              <button class="btn btn-sm btn-success me-1" *ngIf="canApprove() && req.status === 'PENDING'" (click)="approveRequest(req)">Approve</button>
+              <button class="btn btn-sm btn-danger me-1" *ngIf="canApprove() && req.status === 'PENDING'" (click)="rejectRequest(req)">Reject</button>
+              <button class="btn btn-sm btn-danger" *ngIf="canDelete()" (click)="deleteRequest(req.id!)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

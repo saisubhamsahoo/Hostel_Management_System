@@ -1,0 +1,144 @@
+/* ===== BASE ===== */
+.content-wrapper {
+  min-height: calc(100vh - 56px);
+  padding: 30px;
+  background-color: #010614;
+  color: #ffffff;
+}
+
+.content-wrapper h2 {
+  color: #ffffff;
+}
+
+/* ===== NAVBAR ===== */
+.glass-navbar {
+  background: rgba(0, 13, 40, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(77, 159, 255, 0.2);
+  padding: 12px 20px;
+}
+
+.glass-navbar .nav-link {
+  color: #b0c4de !important;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.glass-navbar .nav-link:hover,
+.glass-navbar .nav-link.active {
+  color: #4d9fff !important;
+}
+
+.glass-navbar .navbar-text {
+  color: #b0c4de;
+}
+
+/* ===== STAT CARDS ===== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: #000d28;
+  color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(77, 159, 255, 0.15);
+  transition: box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 0 20px rgba(77, 159, 255, 0.2);
+  border-color: rgba(77, 159, 255, 0.4);
+}
+
+.stat-card h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #4d9fff;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #b0c4de;
+}
+
+/* ===== GLASS CARDS (Quick Actions + Hostel Info) ===== */
+.card.glass {
+  background: #000d28;
+  border: 1px solid rgba(77, 159, 255, 0.15);
+  border-radius: 12px;
+  color: #ffffff;
+}
+
+.card.glass .card-title {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* ===== QUICK ACTION BUTTONS ===== */
+.btn-flux {
+  background: transparent;
+  color: #4d9fff;
+  border: 2px solid #4d9fff;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-flux:hover {
+  background: #4d9fff;
+  color: #010614;
+  box-shadow: 0 0 16px rgba(77, 159, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Logout button */
+.btn-flux-outline {
+  background: transparent;
+  color: #a78bfa;
+  border: 2px solid #a78bfa;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 8px 18px;
+  transition: all 0.3s ease;
+}
+
+.btn-flux-outline:hover {
+  background: #a78bfa;
+  color: #010614;
+  box-shadow: 0 0 16px rgba(167, 139, 250, 0.4);
+}
+
+/* ===== HOSTEL INFORMATION LIST ===== */
+.glass-list {
+  background: transparent;
+}
+
+.glass-list .list-group-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  border-bottom: 1px solid rgba(77, 159, 255, 0.1);
+  color: #b0c4de;
+  padding: 14px 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.glass-list .list-group-item:last-child {
+  border-bottom: none;
+}
+
+.glass-list .list-group-item span {
+  color: #ffffff;
+  font-weight: 600;
+}

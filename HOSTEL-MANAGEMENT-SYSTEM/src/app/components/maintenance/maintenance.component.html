@@ -1,0 +1,75 @@
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between mb-4">
+      <h2>Maintenance Requests</h2>
+      <button class="btn btn-primary" *ngIf="currentUser?.role === 'STUDENT'" (click)="showForm = !showForm">
+        {{ showForm ? 'Cancel' : '+ New Request' }}
+      </button>
+    </div>
+
+    <div *ngIf="showForm" class="card mb-4">
+      <div class="card-body">
+        <form (ngSubmit)="createRequest()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>Issue Type</label>
+              <input type="text" class="form-control" [(ngModel)]="newRequest.issueType" name="issueType" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Room Number</label>
+              <input type="text" class="form-control" [(ngModel)]="newRequest.roomNumber" name="roomNumber" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label>Description</label>
+            <textarea class="form-control" [(ngModel)]="newRequest.description" name="description" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label>Priority</label>
+            <select class="form-control" [(ngModel)]="newRequest.priority" name="priority">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+              <option value="URGENT">Urgent</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success">Submit Request</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Room</th>
+            <th>Issue Type</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th *ngIf="canManage() || canDelete()">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of requests">
+            <td>{{ req.id }}</td>
+            <td>{{ req.studentName }}</td>
+            <td>{{ req.roomNumber }}</td>
+            <td>{{ req.issueType }}</td>
+            <td><span class="badge" [ngClass]="{'bg-danger': req.priority === 'URGENT'}">{{ req.priority }}</span></td>
+            <td><span class="badge" [ngClass]="{'bg-success': req.status === 'RESOLVED', 'bg-warning': req.status === 'PENDING'}">{{ req.status }}</span></td>
+            <td>{{ req.createdAt | date:'short' }}</td>
+            <td *ngIf="canManage()" class="action-buttons">
+  <button class="btn btn-sm btn-warning me-1" *ngIf="req.status === 'PENDING'" (click)="updateStatus(req, 'IN_PROGRESS')">In Progress</button>
+  <button class="btn btn-sm btn-success me-1" *ngIf="req.status === 'PENDING' || req.status === 'IN_PROGRESS'" (click)="updateStatus(req, 'RESOLVED')">Resolve</button>
+  <button class="btn btn-sm btn-danger" *ngIf="req.status === 'PENDING'" (click)="updateStatus(req, 'REJECTED')">Reject</button>
+</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
