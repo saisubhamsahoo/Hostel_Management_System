@@ -1,0 +1,33 @@
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <h2 class="mb-4">Student Management</h2>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Room ID</th>
+            <th>Verified</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of students">
+            <td>{{ student.id }}</td>
+            <td>{{ student.firstName }} {{ student.lastName }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.phone }}</td>
+            <td>{{ student.roomId || 'Not Assigned' }}</td>
+            <td><span [class]="student.verified ? 'badge bg-success' : 'badge bg-warning'">
+              {{ student.verified ? 'Verified' : 'Pending' }}</span></td>
+            <td><button class="btn btn-sm btn-danger" (click)="deleteStudent(student.id!)">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

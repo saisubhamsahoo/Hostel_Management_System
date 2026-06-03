@@ -1,0 +1,73 @@
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Room Management</h2>
+      <button class="btn btn-primary" (click)="showForm = !showForm">{{ showForm ? 'Cancel' : '+ Add Room' }}</button>
+    </div>
+
+    <div *ngIf="showForm" class="card mb-4">
+      <div class="card-body">
+        <h5>Add New Room</h5>
+        <form (ngSubmit)="createRoom()">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Room Number</label>
+              <input type="text" class="form-control" [(ngModel)]="newRoom.roomNumber" name="roomNumber" required>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Room Type</label>
+              <select class="form-control" [(ngModel)]="newRoom.roomType" name="roomType">
+                <option value="SINGLE">Single</option>
+                <option value="DOUBLE">Double</option>
+                <option value="TRIPLE">Triple</option>
+                <option value="FOUR_SHARING">Four Sharing</option>
+              </select>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">Total Beds</label>
+              <input type="number" class="form-control" [(ngModel)]="newRoom.totalBeds" name="totalBeds" required>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">Floor</label>
+              <input type="text" class="form-control" [(ngModel)]="newRoom.floor" name="floor" required>
+            </div>
+            <div class="col-md-2 mb-3">
+              <label class="form-label">&nbsp;</label>
+              <button type="submit" class="btn btn-success w-100">Create Room</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Room Number</th>
+            <th>Type</th>
+            <th>Total Beds</th>
+            <th>Occupied</th>
+            <th>Available</th>
+            <th>Floor</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let room of rooms">
+            <td>{{ room.roomNumber }}</td>
+            <td>{{ room.roomType }}</td>
+            <td>{{ room.totalBeds }}</td>
+            <td>{{ room.occupiedBeds }}</td>
+            <td>{{ room.totalBeds - room.occupiedBeds }}</td>
+            <td>{{ room.floor }}</td>
+            <td><span [class]="room.available ? 'badge bg-success' : 'badge bg-danger'">
+              {{ room.available ? 'Available' : 'Full' }}</span></td>
+            <td><button class="btn btn-sm btn-danger" (click)="deleteRoom(room.id!)">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
